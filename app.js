@@ -4,24 +4,19 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const session = require("express-session");
 
 const route = require("./routes/Route");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(
-  cors({ origin: true, methods: ["GET", "POST", "PUT"], credentials: true })
-);
 app.use(cookieParser());
+
 app.use(
-  session({
-    key: "userId",
-    secret: "secret",
-    resave: false,
-    saveUninitialized: false,
-    cookie: { expires: 60 * 60 * 24 },
+  cors({
+    origin: ["http://localhost:5173"],
+    methods: ["POST", "GET", "PUT"],
+    credentials: true,
   })
 );
 

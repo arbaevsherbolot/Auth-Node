@@ -35,30 +35,30 @@ const controller = {
         })
         .then((user) => {
           if (user.length === 0) {
-            res
-              .status(401)
-              .json({ auth: false, message: "User is doesn't exist!" });
+            return res.json({ auth: false, message: "User is doesn't exist!" });
           } else {
             bcrypt.compare(password, user[0].password, (err, result) => {
               if (result === false) {
-                res.status(401).json({
+                return res.json({
                   auth: false,
                   message: "Incorrect password!",
                 });
               } else {
-                const userId = user[0].id;
+                const username = user[0].username;
+
                 const token = jwt.sign(
-                  { userId: userId },
+                  { username: username },
                   process.env.JWT_ACCESS_SECRET_KEY,
                   {
                     expiresIn: "1h",
                   }
                 );
 
-                req.session.user = user;
+                res.cookie("token", token, {
+                  httpOnly: true,
+                });
 
-                res.status(201).json({
-                  token: token,
+                return res.json({
                   auth: true,
                   data: user,
                   message: "User is successfully logged in!",
@@ -68,7 +68,7 @@ const controller = {
           }
         });
     } catch {
-      res.status(401).json({ auth: false, message: "Login ERROR!" });
+      res.json({ auth: false, message: "Login ERROR!" });
     }
   },
 
@@ -79,32 +79,6 @@ const controller = {
       res.status(401).json({ message: "No DATA!" });
     }
   },
-
-  // updateUsernameById: async (req, res) => {
-  //   try {
-  //     const { userId } = req.params;
-  //     const { username } = req.body;
-
-  //     await db("all_users")
-  //       .where({
-  //         id: userId,
-  //       })
-  //       .update({
-  //         username: username,
-  //       });
-
-  //     const user = await db("all_users").where({
-  //       id: userId,
-  //     });
-
-  //     res.status(201).json({
-  //       data: user,
-  //       message: "Username successfully updated!",
-  //     });
-  //   } catch {
-  //     res.status(201).json({ message: "Unable to change Username!" });
-  //   }
-  // },
 };
 
 module.exports = controller;
