@@ -1,14 +1,17 @@
 const db = require("../connections/db");
+const bcrypt = require("bcrypt");
 
 const controller = {
   register: async (req, res) => {
     try {
       const { username, email, password } = req.body;
 
-      const users = await db("users").insert({
+      const hashPassword = await bcrypt.hash(password, 10);
+
+      const users = await db("all_users").insert({
         username: username,
         email: email,
-        password: password,
+        password: hashPassword,
       });
 
       res
@@ -23,18 +26,28 @@ const controller = {
     try {
       const { username, password } = req.body;
 
-      const user = await db("users").where({
-        username: username,
-        password: password,
-      });
-
-      if (user.length === 0) {
-        res.status(401).json({ message: "Incorrect username or password!" });
-      } else {
-        res
-          .status(201)
-          .json({ data: user, message: "User is successfully logged in!" });
-      }
+      await db("all_users")
+        .where({
+          username: username,
+        })
+        .then((user) => {
+          if (user.length === 0) {
+            res.status(401).json({ message: "User is doesn't exist!" });
+          } else {
+            bcrypt.compare(password, user[0].password, (err, result) => {
+              if (result === false) {
+                res
+                  .status(401)
+                  .json({ error: err, message: "Incorrect password!" });
+              } else {
+                res.status(201).json({
+                  data: user,
+                  message: "User is successfully logged in!",
+                });
+              }
+            });
+          }
+        });
     } catch {
       res.status(401).json({ message: "Login ERROR!" });
     }
