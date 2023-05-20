@@ -14,7 +14,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: ["https://auth-react-node.netlify.app"],
+    origin: true,
     methods: ["POST", "GET", "PUT"],
     credentials: true,
   })
