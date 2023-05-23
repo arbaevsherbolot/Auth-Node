@@ -11,15 +11,13 @@ const controller = {
 
       const hashPassword = await bcrypt.hash(password, 10);
 
-      const users = await db("all_users").insert({
+      await db("all_users").insert({
         username: username,
         email: email,
         password: hashPassword,
       });
 
-      res
-        .status(201)
-        .json({ data: users, message: "User is successfully registered!" });
+      res.status(201).json({ message: "User is successfully registered!" });
     } catch {
       res.status(401).json({ message: "Username already exists!" });
     }
@@ -44,23 +42,15 @@ const controller = {
                   message: "Incorrect password!",
                 });
               } else {
-                const username = user[0].username;
-
                 const token = jwt.sign(
-                  { username: username },
-                  process.env.JWT_ACCESS_SECRET_KEY,
-                  {
-                    expiresIn: "1h",
-                  }
+                  { username: user[0].username, email: user[0].email },
+                  process.env.JWT_ACCESS_SECRET_KEY
                 );
-
-                res.cookie("token", token, {
-                  httpOnly: true,
-                });
 
                 return res.json({
                   auth: true,
-                  data: user,
+                  token: token,
+                  data: user[0],
                   message: "User is successfully logged in!",
                 });
               }
@@ -69,14 +59,6 @@ const controller = {
         });
     } catch {
       res.json({ auth: false, message: "Login ERROR!" });
-    }
-  },
-
-  profileUser: async (req, res) => {
-    try {
-      res.status(201).json({ message: "User Profile" });
-    } catch {
-      res.status(401).json({ message: "No DATA!" });
     }
   },
 };
