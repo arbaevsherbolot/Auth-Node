@@ -67,6 +67,42 @@ const controller = {
 
     res.status(200).json(users);
   },
+
+  admin: async (req, res) => {
+    try {
+      const { username, password } = req.body;
+
+      const admin = {
+        username: "thearbaev",
+        email: "arbaevsherbolot1@gmail.com",
+        password: "wedevx2023",
+      };
+
+      if (username === admin.username && password === admin.password) {
+        const token = jwt.sign(
+          { username: admin.username, email: admin.email },
+          process.env.JWT_ACCESS_SECRET_KEY
+        );
+
+        return res.json({
+          auth: true,
+          token: token,
+          data: admin,
+          message: "Admin is successfully logged in!",
+        });
+      } else {
+        return res.json({
+          auth: false,
+          message: "Failed to log in!",
+        });
+      }
+    } catch {
+      res.json({
+        auth: false,
+        message: "Login ERROR!",
+      });
+    }
+  },
 };
 
 module.exports = controller;
