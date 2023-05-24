@@ -61,6 +61,12 @@ const controller = {
       res.json({ auth: false, message: "Login ERROR!" });
     }
   },
+
+  users: async (req, res) => {
+    const users = await db("all_users");
+
+    res.status(200).json(users);
+  },
 };
 
 module.exports = controller;
