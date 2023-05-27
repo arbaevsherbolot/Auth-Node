@@ -13,9 +13,9 @@ app.use(cors());
 
 app.use("/auth", route);
 
-app.post("/test", async (req, res) => {
+app.get("/", async (req, res) => {
   try {
-    console.log(req.body);
+    res.send("Hello this is a server!");
   } catch (err) {
     console.log(err);
   }
