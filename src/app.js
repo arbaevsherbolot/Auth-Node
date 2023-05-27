@@ -13,7 +13,6 @@ app.use(cors());
 
 app.use("/auth", route);
 
+
 const PORT = process.env.PORT || 2006;
 app.listen(PORT, () => console.log(`App running on http://localhost:${PORT}`));
-
-module.exports = app;
