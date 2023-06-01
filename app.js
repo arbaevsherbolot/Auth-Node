@@ -13,12 +13,9 @@ app.use(cors());
 
 app.use("/auth", route);
 
-app.get("/", async (req, res) => {
-  try {
-    res.send("Hello this is a server!");
-  } catch (err) {
-    console.log(err);
-  }
+app.get("test/:name", async (req, res) => {
+  const reply = (name) => `Hello ${name}!`;
+  res.send(reply(req.params.name));
 });
 
 const PORT = process.env.PORT || 2006;

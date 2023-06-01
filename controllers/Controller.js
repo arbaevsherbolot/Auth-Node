@@ -11,7 +11,7 @@ const controller = {
 
       const hashPassword = await bcrypt.hash(password, 10);
 
-      await db("all_users").insert({
+      await db("users").insert({
         username: username,
         email: email,
         password: hashPassword,
@@ -19,7 +19,7 @@ const controller = {
 
       res.status(201).json({ message: "User is successfully registered!" });
     } catch {
-      res.status(401).json({ message: "Username already exists!" });
+      res.status(404).json({ message: "Username already exists!" });
     }
   },
 
@@ -27,7 +27,7 @@ const controller = {
     try {
       const { username, password } = req.body;
 
-      await db("all_users")
+      await db("users")
         .where({
           username: username,
         })
@@ -63,9 +63,15 @@ const controller = {
   },
 
   users: async (req, res) => {
-    const users = await db("all_users");
+    try {
+      const users = await db("users");
 
-    res.status(200).json(users);
+      res.status(200).json(users);
+    } catch {
+      res.status(404).json({
+        message: "No data in the database!",
+      });
+    }
   },
 
   admin: async (req, res) => {
