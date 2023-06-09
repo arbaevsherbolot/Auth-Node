@@ -13,10 +13,5 @@ app.use(cors());
 
 app.use("/auth", route);
 
-app.get("test/:name", async (req, res) => {
-  const reply = (name) => `Hello ${name}!`;
-  res.send(reply(req.params.name));
-});
-
 const PORT = process.env.PORT || 2006;
 app.listen(PORT, () => console.log(`App running on http://localhost:${PORT}`));
