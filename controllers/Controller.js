@@ -62,6 +62,10 @@ const controller = {
     }
   },
 
+  profile: async (req, res) => {
+    console.log(req.body);
+  },
+
   users: async (req, res) => {
     try {
       const users = await db("users");
@@ -80,7 +84,7 @@ const controller = {
 
       const admin = {
         username: "thearbaev",
-        email: "arbaevsherbolot1@gmail.com",
+        email: "sherbolot@wedevx.co",
         password: "wedevx2023s",
       };
 
@@ -107,6 +111,72 @@ const controller = {
         auth: false,
         message: "Login ERROR!",
       });
+    }
+  },
+
+  posts: async (req, res) => {
+    const posts = await db("myposts");
+
+    try {
+      res.status(200).json({
+        posts: posts,
+      });
+    } catch {
+      res.json({
+        auth: false,
+        message: "The posts don't exist!",
+      });
+    }
+  },
+
+  getPost: async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      const post = await db("myposts").where({ id: id });
+
+      res.json({ status: 200, post: post });
+    } catch (err) {
+      res.json({ status: 400, message: err.message });
+    }
+  },
+
+  createPost: async (req, res) => {
+    try {
+      const { img, title, short_desc, description, date, type } = req.body;
+
+      const newPost = await db("myposts").insert({
+        img: img,
+        title: title,
+        short_desc: short_desc,
+        description: description,
+        date: date,
+        type: type,
+      });
+
+      res.json({ status: 200, post: newPost });
+    } catch (err) {
+      res.json({ status: 400, message: err.message });
+    }
+  },
+
+  updatePost: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { img, title, short_desc, description, date, type } = req.body;
+
+      const updatePost = await db("myposts").where({ id: id }).update({
+        img: img,
+        title: title,
+        short_desc: short_desc,
+        description: description,
+        date: date,
+        type: type,
+      });
+
+      res.json({ status: 200, post: updatePost });
+    } catch (err) {
+      res.json({ status: 400, message: err.message });
     }
   },
 };
