@@ -154,6 +154,7 @@ const controller = {
         description,
         description2,
         description3,
+        description4,
         date,
         type,
       } = req.body;
@@ -169,6 +170,7 @@ const controller = {
         description: description,
         description2: description2,
         description3: description3,
+        description4: description4,
         date: date,
         type: type,
       });
@@ -193,6 +195,7 @@ const controller = {
         description,
         description2,
         description3,
+        description4,
         date,
         type,
       } = req.body;
@@ -208,6 +211,7 @@ const controller = {
         description: description,
         description2: description2,
         description3: description3,
+        description4: description4,
         date: date,
         type: type,
       });
