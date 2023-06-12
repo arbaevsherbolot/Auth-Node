@@ -10,6 +10,7 @@ CREATE TABLE postsDB (
     `description` TEXT,
     `description2` TEXT,
     `description3` TEXT,
+    `description4` TEXT,
     `date` VARCHAR(30),
     `type` VARCHAR(20)
 );

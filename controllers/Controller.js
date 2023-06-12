@@ -115,7 +115,7 @@ const controller = {
   },
 
   posts: async (req, res) => {
-    const posts = await db("posts_db");
+    const posts = await db("all_my_posts");
 
     try {
       res.status(200).json({
@@ -133,7 +133,7 @@ const controller = {
     try {
       const { id } = req.params;
 
-      const post = await db("posts_db").where({ id: id });
+      const post = await db("all_my_posts").where({ id: id });
 
       res.json({ status: 200, post: post });
     } catch (err) {
@@ -158,7 +158,7 @@ const controller = {
         type,
       } = req.body;
 
-      const newPost = await db("posts_db").insert({
+      const newPost = await db("all_my_posts").insert({
         img: img,
         img2: img2,
         title: title,
@@ -197,7 +197,7 @@ const controller = {
         type,
       } = req.body;
 
-      const updatePost = await db("posts_db").where({ id: id }).update({
+      const updatePost = await db("all_my_posts").where({ id: id }).update({
         img: img,
         img2: img2,
         title: title,
