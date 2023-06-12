@@ -143,13 +143,32 @@ const controller = {
 
   createPost: async (req, res) => {
     try {
-      const { img, title, short_desc, description, date, type } = req.body;
+      const {
+        img,
+        img2,
+        subtitle,
+        subtitle2,
+        subtitle3,
+        title,
+        short_desc,
+        description,
+        description2,
+        description3,
+        date,
+        type,
+      } = req.body;
 
       const newPost = await db("posts_db").insert({
         img: img,
+        img2: img2,
         title: title,
+        subtitle: subtitle,
+        subtitle2: subtitle2,
+        subtitle3: subtitle3,
         short_desc: short_desc,
         description: description,
+        description2: description2,
+        description3: description3,
         date: date,
         type: type,
       });
@@ -163,13 +182,32 @@ const controller = {
   updatePost: async (req, res) => {
     try {
       const { id } = req.params;
-      const { img, title, short_desc, description, date, type } = req.body;
+      const {
+        img,
+        img2,
+        subtitle,
+        subtitle2,
+        subtitle3,
+        title,
+        short_desc,
+        description,
+        description2,
+        description3,
+        date,
+        type,
+      } = req.body;
 
       const updatePost = await db("posts_db").where({ id: id }).update({
         img: img,
+        img2: img2,
         title: title,
+        subtitle: subtitle,
+        subtitle2: subtitle2,
+        subtitle3: subtitle3,
         short_desc: short_desc,
         description: description,
+        description2: description2,
+        description3: description3,
         date: date,
         type: type,
       });
