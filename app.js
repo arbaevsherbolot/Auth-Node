@@ -14,5 +14,11 @@ app.use(cookieParser());
 
 app.use("/auth", route);
 
+app.get("/", (req, res) => {
+  const ip = req.ip;
+
+  res.json(ip);
+});
+
 const PORT = process.env.PORT || 2006;
 app.listen(PORT, () => console.log(`App running on http://localhost:${PORT}`));

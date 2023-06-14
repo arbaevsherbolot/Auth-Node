@@ -216,7 +216,7 @@ const controller = {
         type: type,
       });
 
-      res.json({ status: 200, post: id });
+      res.json({ status: 200, post: updatePost });
     } catch (err) {
       res.json({ status: 400, message: err.message });
     }
