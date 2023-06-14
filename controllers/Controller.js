@@ -85,7 +85,7 @@ const controller = {
       const admin = {
         username: "thearbaev",
         email: "sherbolot@wedevx.co",
-        password: "wedevx2023s",
+        password: "wedevx2023Sherbolot30092006",
       };
 
       if (username === admin.username && password === admin.password) {
