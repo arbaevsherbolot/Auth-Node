@@ -17,7 +17,8 @@ app.use("/auth", route);
 app.get("/", (req, res) => {
   const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
 
-  res.json(ip);
+  const device = req.headers["user-agent"];
+  res.json({ ip: ip, device: device });
 });
 
 const PORT = process.env.PORT || 2006;
