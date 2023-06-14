@@ -15,7 +15,7 @@ app.use(cookieParser());
 app.use("/auth", route);
 
 app.get("/", (req, res) => {
-  const ip = req.ip;
+  const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
 
   res.json(ip);
 });
