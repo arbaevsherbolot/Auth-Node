@@ -63,7 +63,29 @@ const controller = {
   },
 
   profile: async (req, res) => {
-    console.log(req.body);
+    const { username } = req.body;
+
+    await db("users")
+      .where({
+        username: username,
+      })
+      .then((result) => {
+        res.json({ auth: true, userinfo: result[0] });
+      })
+      .catch(() => {
+        res.json({ auth: false, message: "User is not defind!" });
+      });
+  },
+
+  uploadPhoto: async (req, res) => {
+    try {
+      const { username } = req.body;
+      const { filename } = req.file;
+
+      console.log(filename);
+    } catch {
+      res.json({ upload: false, message: "Failed to upload a photo" });
+    }
   },
 
   users: async (req, res) => {
