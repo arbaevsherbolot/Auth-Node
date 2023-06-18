@@ -38,6 +38,7 @@ router.post("/notification", controller.sendNotification);
 router.post("/posts/create", controller.createPost);
 
 router.put("/posts/update/:id", controller.updatePost);
+router.put("liked/:id", controller.likedPost);
 
 router.get("/users", controller.users);
 

@@ -251,6 +251,17 @@ const controller = {
     }
   },
 
+  likedPost: async (req, res) => {
+    try {
+      const { like } = req.body;
+      const { id } = req.params;
+
+      db("users").where({ id: id }).update({ likes: like });
+    } catch {
+      res.json({ status: 400, message: err.message });
+    }
+  },
+
   sendNotification: async function (req, res) {
     try {
       const emails = await db("users").select("email");
