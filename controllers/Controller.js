@@ -4,6 +4,9 @@ const db = require("../connections/db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
+const sendGrid = require("@sendgrid/mail");
+sendGrid.setApiKey(process.env.SENDGRID_API_KEY);
+
 const controller = {
   register: async (req, res) => {
     try {
@@ -179,6 +182,7 @@ const controller = {
         description4,
         date,
         type,
+        likes,
       } = req.body;
 
       const newPost = await db("all_my_posts").insert({
@@ -195,6 +199,7 @@ const controller = {
         description4: description4,
         date: date,
         type: type,
+        likes: likes,
       });
 
       res.json({ status: 200, post: newPost });
@@ -220,6 +225,7 @@ const controller = {
         description4,
         date,
         type,
+        likes,
       } = req.body;
 
       const updatePost = await db("all_my_posts").where({ id: id }).update({
@@ -236,11 +242,33 @@ const controller = {
         description4: description4,
         date: date,
         type: type,
+        likes: likes,
       });
 
       res.json({ status: 200, post: updatePost });
     } catch (err) {
       res.json({ status: 400, message: err.message });
+    }
+  },
+
+  sendNotification: async function (req, res) {
+    try {
+      const emails = await db("users").select("email");
+      const { subject, text } = req.body;
+
+      const notification = {
+        to: emails,
+        from: "sherbolot@wedevx.co",
+        subject: `${subject}`,
+        text: `${text}`,
+        html: `<h1>${subject}</h1>`,
+      };
+
+      sendGrid.send(notification);
+
+      res.send(`Notification successfully sent! ${emails.length}guys`);
+    } catch {
+      console.log("SENDGRID ERROR!!!");
     }
   },
 };

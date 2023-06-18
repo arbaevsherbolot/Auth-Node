@@ -33,6 +33,7 @@ router.post("/admin-login", controller.admin);
 
 router.post("/profile", controller.profile);
 router.post("/uploadPhoto", upload.single("photo"), controller.uploadPhoto);
+router.post("/notification", controller.sendNotification);
 
 router.post("/posts/create", controller.createPost);
 
