@@ -16,10 +16,20 @@ app.use("/auth", route);
 
 app.get("/", (req, res) => {
   const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
-
-  const device = req.headers["user-agent"];
-  res.json({ ip: ip, device: device });
+  res.json({ ip: ip });
 });
+
+const badRequest = (app) => {
+  app.all("*", (req, res) => {
+    res.status(404).json({
+      request: req.method,
+      status: 404,
+      path: req.path,
+      message: "Invalid request",
+    });
+  });
+};
+badRequest(app);
 
 const PORT = process.env.PORT || 2006;
 app.listen(PORT, () => console.log(`App running on http://localhost:${PORT}`));

@@ -80,17 +80,6 @@ const controller = {
       });
   },
 
-  uploadPhoto: async (req, res) => {
-    try {
-      const { username } = req.body;
-      const { filename } = req.file;
-
-      console.log(filename);
-    } catch {
-      res.json({ upload: false, message: "Failed to upload a photo" });
-    }
-  },
-
   users: async (req, res) => {
     try {
       const users = await db("users");
@@ -199,7 +188,7 @@ const controller = {
         description4: description4,
         date: date,
         type: type,
-        likes: likes,
+        likes_post: likes,
       });
 
       res.json({ status: 200, post: newPost });
@@ -242,22 +231,11 @@ const controller = {
         description4: description4,
         date: date,
         type: type,
-        likes: likes,
+        likes_post: likes,
       });
 
       res.json({ status: 200, post: updatePost });
     } catch (err) {
-      res.json({ status: 400, message: err.message });
-    }
-  },
-
-  likedPost: async (req, res) => {
-    try {
-      const { like } = req.body;
-      const { id } = req.params;
-
-      db("users").where({ id: id }).update({ likes: like });
-    } catch {
       res.json({ status: 400, message: err.message });
     }
   },
@@ -280,6 +258,86 @@ const controller = {
       res.send(`Notification successfully sent! ${emails.length}guys`);
     } catch {
       console.log("SENDGRID ERROR!!!");
+    }
+  },
+
+  getInterns: async function (req, res) {
+    try {
+      const interns = await db("interns_wedevx");
+
+      res.status(201).json({ interns: interns });
+    } catch (e) {
+      console.log(e.message);
+    }
+  },
+
+  createIntern: async function (req, res) {
+    try {
+      const {
+        firstName,
+        lastName,
+        specialty,
+        phoneNumber,
+        email,
+        location,
+        remote,
+      } = req.body;
+
+      await db("interns_wedevx").insert({
+        firstName: firstName,
+        lastName: lastName,
+        specialty: specialty,
+        phoneNumber: phoneNumber,
+        email: email,
+        location: location,
+        remote: remote,
+      });
+
+      res.status(201).json({
+        message: "New intern has been successfully added to the database...",
+      });
+    } catch (e) {
+      console.log(e.message);
+    }
+  },
+
+  getIntern: async function (req, res) {
+    try {
+      const intern = await db("interns_wedevx").where({ id: req.params.id });
+
+      res.status(201).json({ intern: intern });
+    } catch (e) {
+      console.log(e.message);
+    }
+  },
+
+  updateIntern: async function (req, res) {
+    try {
+      const {
+        firstName,
+        lastName,
+        specialty,
+        phoneNumber,
+        email,
+        location,
+        remote,
+      } = req.body;
+
+      await db("interns_wedevx").where({ id: req.params.id }).update({
+        firstName: firstName,
+        lastName: lastName,
+        specialty: specialty,
+        phoneNumber: phoneNumber,
+        email: email,
+        location: location,
+        remote: remote,
+      });
+
+      res.status(201).json({
+        message: "Intern has been successfully updated to the database...",
+      });
+    } catch (e) {
+      console.log(e.message);
     }
   },
 };
