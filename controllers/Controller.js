@@ -240,7 +240,7 @@ const controller = {
     }
   },
 
-  sendNotification: async function (req, res) {
+  sendNotification: async (req, res) => {
     try {
       const emails = await db("users").select("email");
       const { subject, text } = req.body;
@@ -261,7 +261,7 @@ const controller = {
     }
   },
 
-  getInterns: async function (req, res) {
+  getInterns: async (req, res) => {
     try {
       const interns = await db("interns_wedevx");
 
@@ -271,7 +271,7 @@ const controller = {
     }
   },
 
-  createIntern: async function (req, res) {
+  createIntern: async (req, res) => {
     try {
       const {
         firstName,
@@ -301,7 +301,7 @@ const controller = {
     }
   },
 
-  getIntern: async function (req, res) {
+  getIntern: async (req, res) => {
     try {
       const intern = await db("interns_wedevx").where({ id: req.params.id });
 
@@ -311,7 +311,7 @@ const controller = {
     }
   },
 
-  updateIntern: async function (req, res) {
+  updateIntern: async (req, res) => {
     try {
       const {
         firstName,
@@ -338,6 +338,24 @@ const controller = {
       });
     } catch (e) {
       console.log(e.message);
+    }
+  },
+
+  editProfile: async (req, res) => {
+    try {
+      const { username, userinfo } = req.body;
+
+      await db("users")
+        .where({
+          username: username,
+        })
+        .update({
+          username: userinfo.username,
+          FirstName: userinfo.FirstName,
+          LastName: userinfo.LastName,
+        });
+    } catch (e) {
+      res.status(404).json({ message: "ERROR" });
     }
   },
 };

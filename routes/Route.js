@@ -7,6 +7,7 @@ router.post("/register", controller.register);
 router.post("/login", controller.login);
 router.post("/admin-login", controller.admin);
 router.post("/profile", controller.profile);
+router.post("/edit/profile", controller.editProfile);
 
 router.post("/notification", controller.sendNotification);
 
