@@ -350,7 +350,7 @@ const controller = {
           username: username,
         })
         .update({
-          username: userinfo.username,
+          photo: userinfo.photo,
           FirstName: userinfo.FirstName,
           LastName: userinfo.LastName,
         });
