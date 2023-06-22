@@ -6,6 +6,7 @@ const controller = require("../controllers/Controller");
 router.post("/register", controller.register);
 router.post("/login", controller.login);
 router.post("/admin-login", controller.admin);
+router.post("/profile", controller.profile);
 
 router.post("/notification", controller.sendNotification);
 
