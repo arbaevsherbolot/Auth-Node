@@ -243,19 +243,19 @@ const controller = {
   sendNotification: async (req, res) => {
     try {
       const emails = await db("users").select("email");
-      const { subject, text } = req.body;
+      const email = "sherbolot@wedevx.co";
+      const { text } = req.body;
 
       const notification = {
-        to: emails,
-        from: "sherbolot@wedevx.co",
-        subject: `${subject}`,
-        text: `${text}`,
-        html: `<h1>${subject}</h1>`,
+        to: email,
+        from: email,
+        subject: "Sherbolot Arbaev | Notification",
+        html: `<h1>${text}</h1>`,
       };
 
       sendGrid.send(notification);
 
-      res.send(`Notification successfully sent! ${emails.length}guys`);
+      // res.send(`Notification successfully sent! ${emails.length}guys`);
     } catch {
       console.log("SENDGRID ERROR!!!");
     }
@@ -353,6 +353,7 @@ const controller = {
           photo: userinfo.photo,
           FirstName: userinfo.FirstName,
           LastName: userinfo.LastName,
+          PhoneNumber: userinfo.PhoneNumber,
         });
     } catch (e) {
       res.status(404).json({ message: "ERROR" });
